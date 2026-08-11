@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:salary}",
+            "name": "Debug SalaryCharger",
+            "target": "SalaryCharger",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug SalaryCharger"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:salary}",
+            "name": "Release SalaryCharger",
+            "target": "SalaryCharger",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release SalaryCharger"
+        }
+    ]
+}
