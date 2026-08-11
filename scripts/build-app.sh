@@ -5,6 +5,8 @@ set -euo pipefail
 PROJECT_ROOT="${0:A:h:h}"
 APP_NAME="SalaryCharger"
 APP_DISPLAY_NAME="工资计时器"
+VERSION="$(<"$PROJECT_ROOT/VERSION")"
+BUILD_NUMBER="2"
 DIST_DIR="$PROJECT_ROOT/dist"
 APP_DIR="$DIST_DIR/$APP_DISPLAY_NAME.app"
 CONTENTS_DIR="$APP_DIR/Contents"
@@ -28,7 +30,7 @@ for LPROJ_DIR in "$RESOURCE_BUNDLE"/*.lproj; do
     ditto "$LPROJ_DIR" "$RESOURCES_DIR/${LPROJ_DIR:t}"
 done
 
-cat > "$CONTENTS_DIR/Info.plist" <<'PLIST'
+cat > "$CONTENTS_DIR/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -56,9 +58,9 @@ cat > "$CONTENTS_DIR/Info.plist" <<'PLIST'
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0.0</string>
+    <string>$VERSION</string>
     <key>CFBundleVersion</key>
-    <string>1</string>
+    <string>$BUILD_NUMBER</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
     <key>LSUIElement</key>

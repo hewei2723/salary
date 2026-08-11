@@ -4,8 +4,8 @@ set -euo pipefail
 
 PROJECT_ROOT="${0:A:h:h}"
 APP_PATH="$PROJECT_ROOT/dist/工资计时器.app"
-VERSION="1.0.0"
-PKG_PATH="$PROJECT_ROOT/dist/工资计时器-$VERSION.pkg"
+VERSION="$(<"$PROJECT_ROOT/VERSION")"
+PKG_PATH="$PROJECT_ROOT/dist/SalaryTimer-$VERSION.pkg"
 STAGING_DIR="$(mktemp -d /tmp/salary-timer-pkg.XXXXXX)"
 STAGED_APP="$STAGING_DIR/工资计时器.app"
 
