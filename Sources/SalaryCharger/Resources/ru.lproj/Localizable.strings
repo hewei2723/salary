@@ -29,6 +29,7 @@
 "calendar.single_saturday" = "Рабочая сб.";
 "calendar.alternating_saturday" = "Сб. через раз";
 "calendar.overtime_count" = "Сверхурочно: %d";
+"calendar.rest_day" = "Выходной";
 "calendar.overtime_day" = "Сверхурочно";
 "calendar.remove_overtime" = "Убрать сверхурочные";
 "calendar.mark_overtime" = "Отметить сверхурочные";

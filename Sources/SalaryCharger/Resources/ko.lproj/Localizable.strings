@@ -29,6 +29,7 @@
 "calendar.single_saturday" = "토요일 근무";
 "calendar.alternating_saturday" = "격주 토요일";
 "calendar.overtime_count" = "야근 %d일";
+"calendar.rest_day" = "휴일";
 "calendar.overtime_day" = "야근일";
 "calendar.remove_overtime" = "야근 해제";
 "calendar.mark_overtime" = "야근일로 표시";

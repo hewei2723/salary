@@ -6,7 +6,6 @@ PROJECT_ROOT="${0:A:h:h}"
 APP_NAME="SalaryCharger"
 APP_DISPLAY_NAME="工资计时器"
 VERSION="$(<"$PROJECT_ROOT/VERSION")"
-BUILD_NUMBER="2"
 DIST_DIR="$PROJECT_ROOT/dist"
 APP_DIR="$DIST_DIR/$APP_DISPLAY_NAME.app"
 CONTENTS_DIR="$APP_DIR/Contents"
@@ -60,7 +59,7 @@ cat > "$CONTENTS_DIR/Info.plist" <<PLIST
     <key>CFBundleShortVersionString</key>
     <string>$VERSION</string>
     <key>CFBundleVersion</key>
-    <string>$BUILD_NUMBER</string>
+    <string>$VERSION</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
     <key>LSUIElement</key>

@@ -29,6 +29,7 @@
 "calendar.single_saturday" = "周六上班";
 "calendar.alternating_saturday" = "小周上班";
 "calendar.overtime_count" = "%d 天加班";
+"calendar.rest_day" = "休息日";
 "calendar.overtime_day" = "加班日";
 "calendar.remove_overtime" = "取消加班";
 "calendar.mark_overtime" = "标记为加班";

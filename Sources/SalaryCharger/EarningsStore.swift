@@ -290,6 +290,14 @@ final class EarningsStore: NSObject, ObservableObject {
         overtimeDays.contains(EarningsCalculator.dayKey(for: date, calendar: calendar))
     }
 
+    func isRestDay(_ date: Date) -> Bool {
+        !EarningsCalculator.isRegularWorkday(
+            date,
+            schedule: schedule,
+            calendar: calendar
+        )
+    }
+
     func isWorkingSaturday(_ date: Date) -> Bool {
         calendar.component(.weekday, from: date) == 7
             && EarningsCalculator.isRegularWorkday(

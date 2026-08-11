@@ -11,7 +11,7 @@
 
 [前往 GitHub Releases 下载最新版](https://github.com/hewei2723/salary/releases/latest)
 
-1. 下载 `SalaryTimer-1.1.0.pkg`。
+1. 下载 `SalaryTimer-1.1.1.pkg`。
 2. 双击安装包，将工资计时器安装到“应用程序”。
 3. 安装完成后打开“工资计时器”，金额会常驻显示在菜单栏。
 

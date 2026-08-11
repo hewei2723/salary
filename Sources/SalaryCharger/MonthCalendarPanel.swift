@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MonthCalendarPanel: View {
     @ObservedObject var store: EarningsStore
+    @Environment(\.displayScale) private var displayScale
 
     private var calendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
@@ -91,26 +92,49 @@ struct MonthCalendarPanel: View {
             }
             .frame(maxWidth: .infinity, alignment: .center)
 
-            HStack(spacing: 14) {
-                if let saturdayLegend = store.workweekRule.saturdayLegend {
-                    Label(saturdayLegend, systemImage: "circle.fill")
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(.cyan, .cyan)
-                }
-                Label(L10n.text("calendar.overtime_day"), systemImage: "circle.fill")
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(.orange, .orange)
-                Spacer()
+            ViewThatFits(in: .horizontal) {
+                legendRow(includingWorkTime: true)
+                legendRow(includingWorkTime: false)
+            }
+        }
+    }
+
+    private var legendFontSize: CGFloat {
+        displayScale <= 1.5 ? 10 : 9
+    }
+
+    private func legendRow(includingWorkTime: Bool) -> some View {
+        HStack(spacing: 10) {
+            if let saturdayLegend = store.workweekRule.saturdayLegend {
+                legendLabel(saturdayLegend, color: .cyan)
+            }
+            legendLabel(L10n.text("calendar.rest_day"), color: .green)
+            legendLabel(L10n.text("calendar.overtime_day"), color: .orange)
+
+            if includingWorkTime {
+                Spacer(minLength: 0)
                 Text(store.workTimeText)
                     .monospacedDigit()
+                    .fixedSize(horizontal: true, vertical: false)
             }
-            .font(.system(size: 8, weight: .medium))
-            .foregroundStyle(.secondary)
         }
+        .font(.system(size: legendFontSize, weight: .medium))
+        .foregroundStyle(.secondary)
+        .lineLimit(1)
+        .fixedSize(horizontal: true, vertical: false)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func legendLabel(_ text: String, color: Color) -> some View {
+        Label(text, systemImage: "circle.fill")
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(color, color)
+            .fixedSize(horizontal: true, vertical: false)
     }
 
     private func dayButton(_ date: Date) -> some View {
         let isOvertime = store.isOvertime(date)
+        let isRestDay = store.isRestDay(date)
         let isToday = calendar.isDateInToday(date)
         let isWorkingSaturday = store.isWorkingSaturday(date)
 
@@ -119,7 +143,7 @@ struct MonthCalendarPanel: View {
         } label: {
             ZStack(alignment: .bottom) {
                 Circle()
-                    .fill(isOvertime ? Color.orange.opacity(0.18) : Color.clear)
+                    .fill(dayBackground(isOvertime: isOvertime, isRestDay: isRestDay))
                     .overlay {
                         if isToday {
                             Circle()
@@ -129,7 +153,9 @@ struct MonthCalendarPanel: View {
 
                 Text("\(calendar.component(.day, from: date))")
                     .font(.system(size: 10, weight: isToday || isOvertime ? .semibold : .regular))
-                    .foregroundStyle(isOvertime ? Color.orange : Color.primary)
+                    .foregroundStyle(
+                        isOvertime ? Color.orange : isRestDay ? Color.green : Color.primary
+                    )
                     .frame(maxHeight: .infinity)
 
                 if isWorkingSaturday && !isOvertime {
@@ -150,5 +176,15 @@ struct MonthCalendarPanel: View {
                 ? L10n.text("calendar.remove_overtime")
                 : L10n.text("calendar.mark_overtime")
         )
+    }
+
+    private func dayBackground(isOvertime: Bool, isRestDay: Bool) -> Color {
+        if isOvertime {
+            return Color.orange.opacity(0.18)
+        }
+        if isRestDay {
+            return Color.green.opacity(0.14)
+        }
+        return Color.clear
     }
 }
