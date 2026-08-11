@@ -4,6 +4,8 @@ import SwiftUI
 struct SettingsPanel: View {
     @ObservedObject var store: EarningsStore
     @State private var showsSettings = false
+    @State private var showsLaunchAtLoginAlert = false
+    @State private var launchAtLoginMessage = ""
 
     var body: some View {
         Group {
@@ -15,6 +17,11 @@ struct SettingsPanel: View {
         }
         .frame(width: 296, height: showsSettings ? 380 : 315, alignment: .top)
         .background(VisualEffectView().ignoresSafeArea())
+        .alert("开机自启动", isPresented: $showsLaunchAtLoginAlert) {
+            Button("好", role: .cancel) {}
+        } message: {
+            Text(launchAtLoginMessage)
+        }
     }
 
     private var dashboard: some View {
@@ -51,6 +58,7 @@ struct SettingsPanel: View {
             Spacer()
 
             Button {
+                store.refreshLaunchAtLoginStatus()
                 showsSettings = true
             } label: {
                 Image(systemName: "gearshape")
@@ -200,6 +208,23 @@ struct SettingsPanel: View {
                             .frame(width: 64, alignment: .trailing)
                     }
                 }
+                rowDivider
+                settingRow(title: "开机自启动", icon: "power.circle", tint: .green) {
+                    Toggle(
+                        "",
+                        isOn: Binding(
+                            get: { store.launchesAtLogin },
+                            set: { enabled in
+                                if let message = store.updateLaunchAtLogin(enabled) {
+                                    launchAtLoginMessage = message
+                                    showsLaunchAtLoginAlert = true
+                                }
+                            }
+                        )
+                    )
+                    .labelsHidden()
+                    .toggleStyle(.switch)
+                }
             }
             .padding(.horizontal, 14)
             .padding(.bottom, 6)
@@ -274,7 +299,7 @@ struct SettingsPanel: View {
             Spacer(minLength: 8)
             control()
         }
-        .frame(height: 32)
+        .frame(height: 28)
     }
 
     private var rowDivider: some View {

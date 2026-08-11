@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import ServiceManagement
 
 @MainActor
 final class EarningsStore: NSObject, ObservableObject {
@@ -17,6 +18,7 @@ final class EarningsStore: NSObject, ObservableObject {
     @Published private(set) var overtimeEndMinutes: Int
     @Published private(set) var workweekRule: WorkweekRule
     @Published private(set) var smallWeekAnchor: Date
+    @Published private(set) var launchesAtLogin: Bool
 
     private enum Key {
         static let hourlyRate = "salaryCharger.hourlyRate"
@@ -44,6 +46,7 @@ final class EarningsStore: NSObject, ObservableObject {
     ) {
         self.defaults = defaults
         self.calendar = calendar
+        launchesAtLogin = SMAppService.mainApp.status == .enabled
 
         let storedRate = defaults.double(forKey: Key.hourlyRate)
         let resolvedRate = storedRate > 0 ? storedRate : 100
@@ -246,6 +249,31 @@ final class EarningsStore: NSObject, ObservableObject {
     func updateSmallWeekAnchor(_ value: Date) {
         smallWeekAnchor = EarningsCalculator.normalizedSaturday(for: value, calendar: calendar)
         refresh(at: Date())
+    }
+
+    @discardableResult
+    func updateLaunchAtLogin(_ enabled: Bool) -> String? {
+        do {
+            if enabled {
+                try SMAppService.mainApp.register()
+            } else {
+                try SMAppService.mainApp.unregister()
+            }
+        } catch {
+            launchesAtLogin = SMAppService.mainApp.status == .enabled
+            return "无法更改开机自启动，请在“系统设置 > 通用 > 登录项”中检查工资计时器。"
+        }
+
+        let status = SMAppService.mainApp.status
+        launchesAtLogin = status == .enabled
+        if enabled && status == .requiresApproval {
+            return "请前往“系统设置 > 通用 > 登录项”允许工资计时器开机启动。"
+        }
+        return nil
+    }
+
+    func refreshLaunchAtLoginStatus() {
+        launchesAtLogin = SMAppService.mainApp.status == .enabled
     }
 
     func toggleOvertime(on date: Date) {
