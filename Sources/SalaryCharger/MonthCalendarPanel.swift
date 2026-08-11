@@ -5,7 +5,7 @@ struct MonthCalendarPanel: View {
 
     private var calendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
-        calendar.locale = Locale(identifier: "zh_CN")
+        calendar.locale = L10n.locale
         calendar.timeZone = .current
         calendar.firstWeekday = 2
         calendar.minimumDaysInFirstWeek = 4
@@ -21,8 +21,20 @@ struct MonthCalendarPanel: View {
             Date.FormatStyle()
                 .year(.defaultDigits)
                 .month(.wide)
-                .locale(Locale(identifier: "zh_CN"))
+                .locale(L10n.locale)
         )
+    }
+
+    private var weekdaySymbols: [String] {
+        [
+            L10n.text("weekday.mon"),
+            L10n.text("weekday.tue"),
+            L10n.text("weekday.wed"),
+            L10n.text("weekday.thu"),
+            L10n.text("weekday.fri"),
+            L10n.text("weekday.sat"),
+            L10n.text("weekday.sun")
+        ]
     }
 
     private var days: [Date?] {
@@ -46,7 +58,10 @@ struct MonthCalendarPanel: View {
                     .font(.system(size: 11, weight: .semibold))
                 Spacer()
                 Label(
-                    "\(store.overtimeCount(inMonth: monthStart)) 天加班",
+                    L10n.format(
+                        "calendar.overtime_count",
+                        store.overtimeCount(inMonth: monthStart)
+                    ),
                     systemImage: "clock.badge.checkmark"
                 )
                 .font(.system(size: 10, weight: .medium))
@@ -58,7 +73,7 @@ struct MonthCalendarPanel: View {
                 alignment: .center,
                 spacing: 3
             ) {
-                ForEach(["一", "二", "三", "四", "五", "六", "日"], id: \.self) { day in
+                ForEach(Array(weekdaySymbols.enumerated()), id: \.offset) { _, day in
                     Text(day)
                         .font(.system(size: 8, weight: .medium))
                         .foregroundStyle(.secondary)
@@ -82,7 +97,7 @@ struct MonthCalendarPanel: View {
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(.cyan, .cyan)
                 }
-                Label("加班日", systemImage: "circle.fill")
+                Label(L10n.text("calendar.overtime_day"), systemImage: "circle.fill")
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(.orange, .orange)
                 Spacer()
@@ -130,6 +145,10 @@ struct MonthCalendarPanel: View {
         }
         .frame(width: 32, height: 25)
         .buttonStyle(.plain)
-        .help(isOvertime ? "取消加班" : "标记为加班")
+        .help(
+            isOvertime
+                ? L10n.text("calendar.remove_overtime")
+                : L10n.text("calendar.mark_overtime")
+        )
     }
 }

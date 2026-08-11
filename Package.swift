@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "SalaryCharger",
+    defaultLocalization: "zh-Hans",
     platforms: [
         .macOS(.v14)
     ],
@@ -13,7 +14,10 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "SalaryCharger",
-            path: "Sources/SalaryCharger"
+            path: "Sources/SalaryCharger",
+            resources: [
+                .process("Resources")
+            ]
         ),
         .testTarget(
             name: "SalaryChargerTests",

@@ -16,10 +16,13 @@ struct SalaryChargerApp: App {
         MenuBarExtra {
             SettingsPanel(store: store)
         } label: {
-            Text(
-                "今日 \(store.currencySymbol)\(store.compactDayText)  ·  "
-                    + "本月 \(store.currencySymbol)\(store.compactTotalText)"
-            )
+            Text(L10n.format(
+                "menu.summary",
+                store.currencySymbol,
+                store.compactDayText,
+                store.currencySymbol,
+                store.compactTotalText
+            ))
             .font(.system(size: 12, weight: .medium, design: .rounded))
             .monospacedDigit()
             .lineLimit(1)

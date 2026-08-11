@@ -7,17 +7,17 @@ enum WorkweekRule: String, CaseIterable, Equatable {
 
     var title: String {
         switch self {
-        case .doubleWeekend: "双休"
-        case .singleWeekend: "单休"
-        case .alternatingWeek: "大小周"
+        case .doubleWeekend: L10n.text("workweek.double")
+        case .singleWeekend: L10n.text("workweek.single")
+        case .alternatingWeek: L10n.text("workweek.alternating")
         }
     }
 
     var saturdayLegend: String? {
         switch self {
         case .doubleWeekend: nil
-        case .singleWeekend: "周六上班"
-        case .alternatingWeek: "小周上班"
+        case .singleWeekend: L10n.text("calendar.single_saturday")
+        case .alternatingWeek: L10n.text("calendar.alternating_saturday")
         }
     }
 }

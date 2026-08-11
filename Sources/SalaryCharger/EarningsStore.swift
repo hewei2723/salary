@@ -261,13 +261,13 @@ final class EarningsStore: NSObject, ObservableObject {
             }
         } catch {
             launchesAtLogin = SMAppService.mainApp.status == .enabled
-            return "无法更改开机自启动，请在“系统设置 > 通用 > 登录项”中检查工资计时器。"
+            return L10n.text("launch.error.change")
         }
 
         let status = SMAppService.mainApp.status
         launchesAtLogin = status == .enabled
         if enabled && status == .requiresApproval {
-            return "请前往“系统设置 > 通用 > 登录项”允许工资计时器开机启动。"
+            return L10n.text("launch.error.approval")
         }
         return nil
     }

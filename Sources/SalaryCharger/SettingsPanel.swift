@@ -17,8 +17,8 @@ struct SettingsPanel: View {
         }
         .frame(width: 296, height: showsSettings ? 380 : 315, alignment: .top)
         .background(VisualEffectView().ignoresSafeArea())
-        .alert("开机自启动", isPresented: $showsLaunchAtLoginAlert) {
-            Button("好", role: .cancel) {}
+        .alert(L10n.text("launch.alert.title"), isPresented: $showsLaunchAtLoginAlert) {
+            Button(L10n.text("action.ok"), role: .cancel) {}
         } message: {
             Text(launchAtLoginMessage)
         }
@@ -29,12 +29,12 @@ struct SettingsPanel: View {
             dashboardHeader
 
             HStack(spacing: 14) {
-                metric(title: "今日", value: store.compactDayText)
+                metric(title: L10n.text("dashboard.today"), value: store.compactDayText)
 
                 Divider()
                 .frame(height: 36)
 
-                metric(title: "本月", value: store.compactTotalText)
+                metric(title: L10n.text("dashboard.month"), value: store.compactTotalText)
             }
             .padding(.horizontal, 12)
             .padding(.bottom, 8)
@@ -52,7 +52,7 @@ struct SettingsPanel: View {
 
     private var dashboardHeader: some View {
         HStack(spacing: 10) {
-            Text("工资计时器")
+            Text(L10n.text("app.name"))
                 .font(.system(size: 13, weight: .semibold))
 
             Spacer()
@@ -65,7 +65,7 @@ struct SettingsPanel: View {
                     .frame(width: 22, height: 22)
             }
             .buttonStyle(.borderless)
-            .help("设置")
+            .help(L10n.text("action.settings"))
 
             quitButton
         }
@@ -83,9 +83,9 @@ struct SettingsPanel: View {
                         .frame(width: 22, height: 22)
                 }
                 .buttonStyle(.borderless)
-                .help("返回")
+                .help(L10n.text("action.back"))
 
-                Text("工资设置")
+                Text(L10n.text("settings.title"))
                     .font(.system(size: 13, weight: .semibold))
 
                 Spacer()
@@ -98,8 +98,8 @@ struct SettingsPanel: View {
                 .padding(.horizontal, 14)
 
             VStack(alignment: .leading, spacing: 0) {
-                sectionTitle("计薪")
-                settingRow(title: "时薪", icon: "banknote", tint: .green) {
+                sectionTitle(L10n.text("settings.section.pay"))
+                settingRow(title: L10n.text("settings.hourly_rate"), icon: "banknote", tint: .green) {
                     rateField(
                         value: Binding(
                             get: { store.hourlyRate },
@@ -108,7 +108,7 @@ struct SettingsPanel: View {
                     )
                 }
                 rowDivider
-                settingRow(title: "加班时薪", icon: "moon.stars", tint: .orange) {
+                settingRow(title: L10n.text("settings.overtime_rate"), icon: "moon.stars", tint: .orange) {
                     rateField(
                         value: Binding(
                             get: { store.overtimeRate },
@@ -117,8 +117,8 @@ struct SettingsPanel: View {
                     )
                 }
 
-                sectionTitle("日程")
-                settingRow(title: "工作时段", icon: "briefcase", tint: .blue) {
+                sectionTitle(L10n.text("settings.section.schedule"))
+                settingRow(title: L10n.text("settings.work_hours"), icon: "briefcase", tint: .blue) {
                     timeRange(
                         start: Binding(
                             get: { store.workStartTime },
@@ -131,7 +131,7 @@ struct SettingsPanel: View {
                     )
                 }
                 rowDivider
-                settingRow(title: "午休时段", icon: "cup.and.saucer", tint: .mint) {
+                settingRow(title: L10n.text("settings.lunch_hours"), icon: "cup.and.saucer", tint: .mint) {
                     timeRange(
                         start: Binding(
                             get: { store.lunchStartTime },
@@ -144,7 +144,7 @@ struct SettingsPanel: View {
                     )
                 }
                 rowDivider
-                settingRow(title: "加班时段", icon: "moon.zzz", tint: .red) {
+                settingRow(title: L10n.text("settings.overtime_hours"), icon: "moon.zzz", tint: .red) {
                     timeRange(
                         start: Binding(
                             get: { store.overtimeStartTime },
@@ -157,8 +157,8 @@ struct SettingsPanel: View {
                     )
                 }
 
-                sectionTitle("规则")
-                settingRow(title: "休息制度", icon: "calendar", tint: .purple) {
+                sectionTitle(L10n.text("settings.section.rules"))
+                settingRow(title: L10n.text("settings.workweek"), icon: "calendar", tint: .purple) {
                     Picker(
                         "",
                         selection: Binding(
@@ -177,7 +177,7 @@ struct SettingsPanel: View {
                 rowDivider
                 if store.workweekRule == .alternatingWeek {
                     settingRow(
-                        title: "小周周六",
+                        title: L10n.text("settings.alternating_saturday"),
                         icon: "calendar.badge.clock",
                         tint: .cyan
                     ) {
@@ -194,7 +194,7 @@ struct SettingsPanel: View {
                     }
                     rowDivider
                 }
-                settingRow(title: "刷新频率", icon: "timer", tint: .secondary) {
+                settingRow(title: L10n.text("settings.refresh_interval"), icon: "timer", tint: .secondary) {
                     Stepper(
                         value: Binding(
                             get: { store.intervalSeconds },
@@ -203,13 +203,13 @@ struct SettingsPanel: View {
                         in: 1...3_600,
                         step: 1
                     ) {
-                        Text("\(store.intervalSeconds) 秒")
+                        Text(L10n.format("settings.interval_seconds", store.intervalSeconds))
                             .monospacedDigit()
                             .frame(width: 64, alignment: .trailing)
                     }
                 }
                 rowDivider
-                settingRow(title: "开机自启动", icon: "power.circle", tint: .green) {
+                settingRow(title: L10n.text("settings.launch_at_login"), icon: "power.circle", tint: .green) {
                     Toggle(
                         "",
                         isOn: Binding(
@@ -240,7 +240,7 @@ struct SettingsPanel: View {
                 .frame(width: 22, height: 22)
         }
         .buttonStyle(.borderless)
-        .help("退出工资计时器")
+        .help(L10n.text("action.quit"))
     }
 
     private func metric(title: String, value: String) -> some View {
