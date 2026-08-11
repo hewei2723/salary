@@ -47,5 +47,6 @@ cat > "$CONTENTS_DIR/Info.plist" <<'PLIST'
 </plist>
 PLIST
 
+xattr -cr "$APP_DIR"
 codesign --force --deep --sign - "$APP_DIR"
 echo "$APP_DIR"

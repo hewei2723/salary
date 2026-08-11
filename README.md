@@ -16,4 +16,12 @@ chmod +x scripts/build-app.sh
 open "dist/工资计时器.app"
 ```
 
+## 打包为可双击安装的 Installer
+
+```bash
+chmod +x scripts/build-installer.sh
+./scripts/build-installer.sh
+open "dist/工资计时器-1.0.0.pkg"
+```
+
 主面板显示今日、本月金额和本月日历；点击齿轮进入独立设置页。时薪、加班时薪、上下班时间、午休时间、加班时间、增长间隔和小周周六锚点均可配置。默认工作时间为 09:30-18:30，午休为 12:00-13:00，加班为 18:30-20:30；日历中被标记的日期会追加计算这段加班工资。
