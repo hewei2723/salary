@@ -33,6 +33,7 @@
 "calendar.overtime_day" = "Сверхурочно";
 "calendar.remove_overtime" = "Убрать сверхурочные";
 "calendar.mark_overtime" = "Отметить сверхурочные";
+"calendar.day_help" = "Левый клик — зарплата за день, правый — сверхурочные";
 "weekday.mon" = "Пн";
 "weekday.tue" = "Вт";
 "weekday.wed" = "Ср";

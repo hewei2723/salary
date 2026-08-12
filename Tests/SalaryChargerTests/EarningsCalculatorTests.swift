@@ -232,6 +232,61 @@ struct EarningsCalculatorTests {
         #expect(abs(totals.day - 250) < 0.000_001)
     }
 
+    @Test func calculatesSelectedPastTodayAndFutureDayEarnings() throws {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = try #require(TimeZone(identifier: "Asia/Shanghai"))
+        let schedule = try schedule(calendar: calendar)
+
+        func date(day: Int, hour: Int = 0) throws -> Date {
+            try #require(
+                DateComponents(
+                    calendar: calendar,
+                    timeZone: calendar.timeZone,
+                    year: 2026,
+                    month: 8,
+                    day: day,
+                    hour: hour
+                ).date
+            )
+        }
+
+        let now = try date(day: 12, hour: 12)
+        let overtimeDay = try date(day: 11)
+        let overtimeKey = EarningsCalculator.dayKey(for: overtimeDay, calendar: calendar)
+
+        let past = EarningsCalculator.dailyEarnings(
+            hourlyRate: 100,
+            overtimeRate: 200,
+            overtimeDays: [overtimeKey],
+            schedule: schedule,
+            on: overtimeDay,
+            at: now,
+            calendar: calendar
+        )
+        let today = EarningsCalculator.dailyEarnings(
+            hourlyRate: 100,
+            overtimeRate: 200,
+            overtimeDays: [],
+            schedule: schedule,
+            on: now,
+            at: now,
+            calendar: calendar
+        )
+        let future = EarningsCalculator.dailyEarnings(
+            hourlyRate: 100,
+            overtimeRate: 200,
+            overtimeDays: [],
+            schedule: schedule,
+            on: try date(day: 13),
+            at: now,
+            calendar: calendar
+        )
+
+        #expect(abs(past - 1_200) < 0.000_001)
+        #expect(abs(today - 250) < 0.000_001)
+        #expect(future == 0)
+    }
+
     private func schedule(calendar: Calendar) throws -> WorkSchedule {
         let anchor = try #require(
             DateComponents(

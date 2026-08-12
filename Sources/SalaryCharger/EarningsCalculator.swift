@@ -64,20 +64,13 @@ enum EarningsCalculator {
     ) -> (day: Double, month: Double) {
         let dayStart = calendar.startOfDay(for: date)
         let monthStart = calendar.dateInterval(of: .month, for: date)?.start ?? dayStart
-        let todayKey = dayKey(for: date, calendar: calendar)
-        let todayIsOvertime = overtimeDays.contains(todayKey)
-        let todayRegularSeconds = regularSeconds(
-            on: date,
-            until: date,
-            isOvertime: todayIsOvertime,
+        let dayTotal = dailyEarnings(
+            hourlyRate: hourlyRate,
+            overtimeRate: overtimeRate,
+            overtimeDays: overtimeDays,
             schedule: schedule,
-            calendar: calendar
-        )
-        let todayOvertimeSeconds = overtimeSeconds(
             on: date,
-            until: date,
-            isOvertime: todayIsOvertime,
-            schedule: schedule,
+            at: date,
             calendar: calendar
         )
 
@@ -110,10 +103,37 @@ enum EarningsCalculator {
         }
 
         return (
-            day: earned(hourlyRate: hourlyRate, elapsed: todayRegularSeconds)
-                + earned(hourlyRate: overtimeRate, elapsed: todayOvertimeSeconds),
+            day: dayTotal,
             month: monthTotal
         )
+    }
+
+    static func dailyEarnings(
+        hourlyRate: Double,
+        overtimeRate: Double,
+        overtimeDays: Set<String>,
+        schedule: WorkSchedule,
+        on date: Date,
+        at now: Date,
+        calendar: Calendar = .current
+    ) -> Double {
+        let isOvertime = overtimeDays.contains(dayKey(for: date, calendar: calendar))
+        let regular = regularSeconds(
+            on: date,
+            until: now,
+            isOvertime: isOvertime,
+            schedule: schedule,
+            calendar: calendar
+        )
+        let overtime = overtimeSeconds(
+            on: date,
+            until: now,
+            isOvertime: isOvertime,
+            schedule: schedule,
+            calendar: calendar
+        )
+        return earned(hourlyRate: hourlyRate, elapsed: regular)
+            + earned(hourlyRate: overtimeRate, elapsed: overtime)
     }
 
     static func normalizedSaturday(for date: Date, calendar: Calendar = .current) -> Date {

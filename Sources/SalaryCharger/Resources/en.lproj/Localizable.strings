@@ -33,6 +33,7 @@
 "calendar.overtime_day" = "Overtime";
 "calendar.remove_overtime" = "Remove overtime";
 "calendar.mark_overtime" = "Mark as overtime";
+"calendar.day_help" = "Left-click to view earnings; right-click to set overtime";
 "weekday.mon" = "M";
 "weekday.tue" = "T";
 "weekday.wed" = "W";

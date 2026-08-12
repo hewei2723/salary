@@ -188,6 +188,21 @@ final class EarningsStore: NSObject, ObservableObject {
         format(intervalEarnings, grouping: false)
     }
 
+    func compactEarningsText(on date: Date, at now: Date = Date()) -> String {
+        format(
+            EarningsCalculator.dailyEarnings(
+                hourlyRate: hourlyRate,
+                overtimeRate: overtimeRate,
+                overtimeDays: overtimeDays,
+                schedule: schedule,
+                on: date,
+                at: now,
+                calendar: calendar
+            ),
+            grouping: true
+        )
+    }
+
     var workStartTime: Date { dateForMinutes(workStartMinutes) }
     var workEndTime: Date { dateForMinutes(workEndMinutes) }
     var lunchStartTime: Date { dateForMinutes(lunchStartMinutes) }

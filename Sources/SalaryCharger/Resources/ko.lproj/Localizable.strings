@@ -33,6 +33,7 @@
 "calendar.overtime_day" = "야근일";
 "calendar.remove_overtime" = "야근 해제";
 "calendar.mark_overtime" = "야근일로 표시";
+"calendar.day_help" = "왼쪽 클릭으로 급여 보기, 오른쪽 클릭으로 야근 설정";
 "weekday.mon" = "월";
 "weekday.tue" = "화";
 "weekday.wed" = "수";

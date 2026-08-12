@@ -6,6 +6,14 @@ struct SettingsPanel: View {
     @State private var showsSettings = false
     @State private var showsLaunchAtLoginAlert = false
     @State private var launchAtLoginMessage = ""
+    @State private var selectedDate: Date?
+
+    private var calendar: Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.locale = L10n.locale
+        calendar.timeZone = .current
+        return calendar
+    }
 
     var body: some View {
         Group {
@@ -29,7 +37,7 @@ struct SettingsPanel: View {
             dashboardHeader
 
             HStack(spacing: 14) {
-                metric(title: L10n.text("dashboard.today"), value: store.compactDayText)
+                metric(title: selectedDayTitle, value: selectedDayEarningsText)
 
                 Divider()
                 .frame(height: 36)
@@ -42,12 +50,29 @@ struct SettingsPanel: View {
             Divider()
                 .padding(.horizontal, 12)
 
-            MonthCalendarPanel(store: store)
+            MonthCalendarPanel(store: store, selectedDate: $selectedDate)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 8)
 
             Spacer(minLength: 0)
         }
+    }
+
+    private var selectedDayTitle: String {
+        guard let selectedDate, !calendar.isDateInToday(selectedDate) else {
+            return L10n.text("dashboard.today")
+        }
+        return selectedDate.formatted(
+            Date.FormatStyle()
+                .month(.abbreviated)
+                .day()
+                .locale(L10n.locale)
+        )
+    }
+
+    private var selectedDayEarningsText: String {
+        guard let selectedDate else { return store.compactDayText }
+        return store.compactEarningsText(on: selectedDate)
     }
 
     private var dashboardHeader: some View {

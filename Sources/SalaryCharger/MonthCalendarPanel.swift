@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MonthCalendarPanel: View {
     @ObservedObject var store: EarningsStore
+    @Binding var selectedDate: Date?
     @Environment(\.displayScale) private var displayScale
 
     private var calendar: Calendar {
@@ -136,16 +137,20 @@ struct MonthCalendarPanel: View {
         let isOvertime = store.isOvertime(date)
         let isRestDay = store.isRestDay(date)
         let isToday = calendar.isDateInToday(date)
+        let isSelected = selectedDate.map { calendar.isDate($0, inSameDayAs: date) } ?? false
         let isWorkingSaturday = store.isWorkingSaturday(date)
 
         return Button {
-            store.toggleOvertime(on: date)
+            selectedDate = date
         } label: {
             ZStack(alignment: .bottom) {
                 Circle()
                     .fill(dayBackground(isOvertime: isOvertime, isRestDay: isRestDay))
                     .overlay {
-                        if isToday {
+                        if isSelected {
+                            Circle()
+                                .stroke(Color.accentColor, lineWidth: 2)
+                        } else if isToday {
                             Circle()
                                 .stroke(Color.accentColor.opacity(0.8), lineWidth: 1)
                         }
@@ -171,11 +176,20 @@ struct MonthCalendarPanel: View {
         }
         .frame(width: 32, height: 25)
         .buttonStyle(.plain)
-        .help(
-            isOvertime
-                ? L10n.text("calendar.remove_overtime")
-                : L10n.text("calendar.mark_overtime")
-        )
+        .contextMenu {
+            Button {
+                selectedDate = date
+                store.toggleOvertime(on: date)
+            } label: {
+                Label(
+                    isOvertime
+                        ? L10n.text("calendar.remove_overtime")
+                        : L10n.text("calendar.mark_overtime"),
+                    systemImage: isOvertime ? "clock.badge.xmark" : "clock.badge.checkmark"
+                )
+            }
+        }
+        .help(L10n.text("calendar.day_help"))
     }
 
     private func dayBackground(isOvertime: Bool, isRestDay: Bool) -> Color {

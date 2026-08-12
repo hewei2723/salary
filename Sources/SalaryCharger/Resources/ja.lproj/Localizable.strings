@@ -33,6 +33,7 @@
 "calendar.overtime_day" = "残業日";
 "calendar.remove_overtime" = "残業を解除";
 "calendar.mark_overtime" = "残業日に設定";
+"calendar.day_help" = "左クリックで給与を表示、右クリックで残業を設定";
 "weekday.mon" = "月";
 "weekday.tue" = "火";
 "weekday.wed" = "水";

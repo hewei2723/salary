@@ -33,6 +33,7 @@
 "calendar.overtime_day" = "加班日";
 "calendar.remove_overtime" = "取消加班";
 "calendar.mark_overtime" = "标记为加班";
+"calendar.day_help" = "左键查看当天工资，右键设置加班";
 "weekday.mon" = "一";
 "weekday.tue" = "二";
 "weekday.wed" = "三";
