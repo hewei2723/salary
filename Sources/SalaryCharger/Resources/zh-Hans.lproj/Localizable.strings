@@ -2,6 +2,7 @@
 "menu.summary" = "今日 %@%@  ·  本月 %@%@";
 "dashboard.today" = "今日";
 "dashboard.month" = "本月";
+"dashboard.selected_month_total" = "%@累计";
 "action.settings" = "设置";
 "action.back" = "返回";
 "action.ok" = "好";
@@ -29,6 +30,8 @@
 "calendar.single_saturday" = "周六上班";
 "calendar.alternating_saturday" = "小周上班";
 "calendar.overtime_count" = "%d 天加班";
+"calendar.previous_month" = "上个月";
+"calendar.next_month" = "下个月";
 "calendar.rest_day" = "休息日";
 "calendar.overtime_day" = "加班日";
 "calendar.remove_overtime" = "取消加班";

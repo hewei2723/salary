@@ -2,6 +2,7 @@
 "menu.summary" = "Сегодня %@%@  ·  Месяц %@%@";
 "dashboard.today" = "Сегодня";
 "dashboard.month" = "Этот месяц";
+"dashboard.selected_month_total" = "Итого за %@";
 "action.settings" = "Настройки";
 "action.back" = "Назад";
 "action.ok" = "ОК";
@@ -29,6 +30,8 @@
 "calendar.single_saturday" = "Рабочая сб.";
 "calendar.alternating_saturday" = "Сб. через раз";
 "calendar.overtime_count" = "Сверхурочно: %d";
+"calendar.previous_month" = "Предыдущий месяц";
+"calendar.next_month" = "Следующий месяц";
 "calendar.rest_day" = "Выходной";
 "calendar.overtime_day" = "Сверхурочно";
 "calendar.remove_overtime" = "Убрать сверхурочные";

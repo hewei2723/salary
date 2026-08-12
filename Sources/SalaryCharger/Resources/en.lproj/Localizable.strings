@@ -2,6 +2,7 @@
 "menu.summary" = "Today %@%@  ·  Month %@%@";
 "dashboard.today" = "Today";
 "dashboard.month" = "This Month";
+"dashboard.selected_month_total" = "%@ Total";
 "action.settings" = "Settings";
 "action.back" = "Back";
 "action.ok" = "OK";
@@ -29,6 +30,8 @@
 "calendar.single_saturday" = "Working Sat";
 "calendar.alternating_saturday" = "Alt. Sat";
 "calendar.overtime_count" = "Overtime: %d";
+"calendar.previous_month" = "Previous month";
+"calendar.next_month" = "Next month";
 "calendar.rest_day" = "Day off";
 "calendar.overtime_day" = "Overtime";
 "calendar.remove_overtime" = "Remove overtime";

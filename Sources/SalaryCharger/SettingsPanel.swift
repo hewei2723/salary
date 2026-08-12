@@ -42,7 +42,7 @@ struct SettingsPanel: View {
                 Divider()
                 .frame(height: 36)
 
-                metric(title: L10n.text("dashboard.month"), value: store.compactTotalText)
+                metric(title: selectedMonthTitle, value: selectedMonthEarningsText)
             }
             .padding(.horizontal, 12)
             .padding(.bottom, 8)
@@ -52,7 +52,7 @@ struct SettingsPanel: View {
 
             MonthCalendarPanel(store: store, selectedDate: $selectedDate)
                 .padding(.horizontal, 10)
-                .padding(.vertical, 8)
+                .padding(.vertical, 6)
 
             Spacer(minLength: 0)
         }
@@ -73,6 +73,21 @@ struct SettingsPanel: View {
     private var selectedDayEarningsText: String {
         guard let selectedDate else { return store.compactDayText }
         return store.compactEarningsText(on: selectedDate)
+    }
+
+    private var selectedMonthTitle: String {
+        guard let selectedDate else { return L10n.text("dashboard.month") }
+        let month = selectedDate.formatted(
+            Date.FormatStyle()
+                .month(.abbreviated)
+                .locale(L10n.locale)
+        )
+        return L10n.format("dashboard.selected_month_total", month)
+    }
+
+    private var selectedMonthEarningsText: String {
+        guard let selectedDate else { return store.compactTotalText }
+        return store.compactMonthEarningsText(through: selectedDate)
     }
 
     private var dashboardHeader: some View {
@@ -273,6 +288,8 @@ struct SettingsPanel: View {
             Text(title)
                 .font(.system(size: 11, weight: .medium))
                 .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
             Text("\(store.currencySymbol)\(value)")
                 .font(.system(size: 18, weight: .semibold, design: .rounded))
                 .monospacedDigit()

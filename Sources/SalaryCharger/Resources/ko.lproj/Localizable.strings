@@ -2,6 +2,7 @@
 "menu.summary" = "오늘 %@%@  ·  이번 달 %@%@";
 "dashboard.today" = "오늘";
 "dashboard.month" = "이번 달";
+"dashboard.selected_month_total" = "%@ 누계";
 "action.settings" = "설정";
 "action.back" = "뒤로";
 "action.ok" = "확인";
@@ -29,6 +30,8 @@
 "calendar.single_saturday" = "토요일 근무";
 "calendar.alternating_saturday" = "격주 토요일";
 "calendar.overtime_count" = "야근 %d일";
+"calendar.previous_month" = "이전 달";
+"calendar.next_month" = "다음 달";
 "calendar.rest_day" = "휴일";
 "calendar.overtime_day" = "야근일";
 "calendar.remove_overtime" = "야근 해제";

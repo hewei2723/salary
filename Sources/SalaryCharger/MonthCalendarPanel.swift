@@ -3,6 +3,7 @@ import SwiftUI
 struct MonthCalendarPanel: View {
     @ObservedObject var store: EarningsStore
     @Binding var selectedDate: Date?
+    @State private var displayedMonth = Date()
     @Environment(\.displayScale) private var displayScale
 
     private var calendar: Calendar {
@@ -15,7 +16,7 @@ struct MonthCalendarPanel: View {
     }
 
     private var monthStart: Date {
-        calendar.dateInterval(of: .month, for: Date())?.start ?? Date()
+        calendar.dateInterval(of: .month, for: displayedMonth)?.start ?? displayedMonth
     }
 
     private var title: String {
@@ -50,14 +51,30 @@ struct MonthCalendarPanel: View {
         let dates = dayRange.compactMap { day in
             calendar.date(byAdding: .day, value: day - 1, to: monthStart)
         }.map(Optional.some)
-        return emptyDays + dates
+        let populatedDays = emptyDays + dates
+        let trailingEmptyDays = max(0, 42 - populatedDays.count)
+        return populatedDays + Array<Date?>(repeating: nil, count: trailingEmptyDays)
     }
 
     var body: some View {
         VStack(spacing: 5) {
-            HStack {
+            HStack(spacing: 3) {
+                monthNavigationButton(
+                    systemImage: "chevron.left",
+                    helpKey: "calendar.previous_month",
+                    offset: -1
+                )
+
                 Text(title)
                     .font(.system(size: 11, weight: .semibold))
+                    .frame(minWidth: 72)
+
+                monthNavigationButton(
+                    systemImage: "chevron.right",
+                    helpKey: "calendar.next_month",
+                    offset: 1
+                )
+
                 Spacer()
                 Label(
                     L10n.format(
@@ -73,7 +90,7 @@ struct MonthCalendarPanel: View {
             LazyVGrid(
                 columns: Array(repeating: GridItem(.fixed(32), spacing: 5), count: 7),
                 alignment: .center,
-                spacing: 3
+                spacing: 2
             ) {
                 ForEach(Array(weekdaySymbols.enumerated()), id: \.offset) { _, day in
                     Text(day)
@@ -87,7 +104,7 @@ struct MonthCalendarPanel: View {
                         dayButton(date)
                     } else {
                         Color.clear
-                            .frame(width: 32, height: 25)
+                            .frame(width: 32, height: 22)
                     }
                 }
             }
@@ -102,6 +119,29 @@ struct MonthCalendarPanel: View {
 
     private var legendFontSize: CGFloat {
         displayScale <= 1.5 ? 10 : 9
+    }
+
+    private func monthNavigationButton(
+        systemImage: String,
+        helpKey: String,
+        offset: Int
+    ) -> some View {
+        Button {
+            guard let month = calendar.date(byAdding: .month, value: offset, to: monthStart) else {
+                return
+            }
+            displayedMonth = month
+            selectedDate = nil
+        } label: {
+            Image(systemName: systemImage)
+                .font(.system(size: 9, weight: .semibold))
+                .frame(width: 20, height: 20)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(.secondary)
+        .help(L10n.text(helpKey))
+        .accessibilityLabel(L10n.text(helpKey))
     }
 
     private func legendRow(includingWorkTime: Bool) -> some View {
@@ -124,6 +164,7 @@ struct MonthCalendarPanel: View {
         .lineLimit(1)
         .fixedSize(horizontal: true, vertical: false)
         .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: 14)
     }
 
     private func legendLabel(_ text: String, color: Color) -> some View {
@@ -170,11 +211,11 @@ struct MonthCalendarPanel: View {
                         .padding(.bottom, 2)
                 }
             }
-            .frame(width: 23, height: 23)
-            .frame(width: 32, height: 25)
+            .frame(width: 21, height: 21)
+            .frame(width: 32, height: 22)
             .contentShape(Rectangle())
         }
-        .frame(width: 32, height: 25)
+        .frame(width: 32, height: 22)
         .buttonStyle(.plain)
         .contextMenu {
             Button {

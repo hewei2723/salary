@@ -2,6 +2,7 @@
 "menu.summary" = "今日 %@%@  ·  今月 %@%@";
 "dashboard.today" = "今日";
 "dashboard.month" = "今月";
+"dashboard.selected_month_total" = "%@累計";
 "action.settings" = "設定";
 "action.back" = "戻る";
 "action.ok" = "OK";
@@ -29,6 +30,8 @@
 "calendar.single_saturday" = "土曜出勤";
 "calendar.alternating_saturday" = "隔週土曜";
 "calendar.overtime_count" = "残業日 %d日";
+"calendar.previous_month" = "前の月";
+"calendar.next_month" = "次の月";
 "calendar.rest_day" = "休日";
 "calendar.overtime_day" = "残業日";
 "calendar.remove_overtime" = "残業を解除";

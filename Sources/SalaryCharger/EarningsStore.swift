@@ -203,6 +203,19 @@ final class EarningsStore: NSObject, ObservableObject {
         )
     }
 
+    func compactMonthEarningsText(through date: Date, at now: Date = Date()) -> String {
+        let cutoff: Date
+        if calendar.isDate(date, inSameDayAs: now) {
+            cutoff = now
+        } else {
+            let dayStart = calendar.startOfDay(for: date)
+            cutoff = calendar.date(byAdding: .day, value: 1, to: dayStart)?
+                .addingTimeInterval(-1) ?? date
+        }
+
+        return format(totals(at: cutoff).month, grouping: true)
+    }
+
     var workStartTime: Date { dateForMinutes(workStartMinutes) }
     var workEndTime: Date { dateForMinutes(workEndMinutes) }
     var lunchStartTime: Date { dateForMinutes(lunchStartMinutes) }
